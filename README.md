@@ -1,2 +1,2 @@
-Laravel  VUE CRUD
+Laravel and VUE  CRUD operations by API.
 

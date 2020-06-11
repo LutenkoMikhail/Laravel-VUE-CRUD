@@ -1,8 +1,8 @@
 <template>
-    <body class="d-flex flex-column min-vh-100">
-    <div class="wrapper flex-grow-1"></div>
+    <body class="d-flex flex-column min-vh-100 ">
+    <div class="wrapper flex-grow-1 "></div>
     <footer>
-        <span class="text-muted">Place sticky footer content here.</span>
+        <span class="text-muted ">Place sticky footer content here.</span>
     </footer>
     </body>
 </template>

@@ -6,10 +6,10 @@
         </div>
 
         <div v-if="errored" class="alert alert-danger" role="alert">
-                            Not records!
+            Not records!
         </div>
         <table v-else class="table table-striped">
-            <div v-if="loading">Loading</div>
+            <div v-if="loading">Loading................</div>
             <thead class="thead-dark">
             <tr>
                 <th scope="col">ID</th>
@@ -31,6 +31,27 @@
 
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li :class="{disabled:!pagination.prev_page_url}"
+                    @click.prevent="getPosts(pagination.prev_page_url)"
+                    class="page-item">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        Page {{pagination.current_page}} of  {{pagination.last_page}} Pages
+                    </a>
+                </li>
+                <li :class="{disabled:!pagination.next_page_url}"
+                    @click.prevent="getPosts(pagination.next_page_url)"
+                    class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 </template>
 
@@ -55,11 +76,13 @@
             this.getPosts()
         },
         methods: {
-            getPosts() {
+            getPosts(page_url) {
+                page_url = page_url || 'api/posts'
                 axios
-                    .get('api/posts')
+                    .get(page_url)
                     .then(response => {
                             this.posts = response.data.data
+                            this.makePagiantion(response.data)
                             // console.log(response.data.data)
                         }
                     )
@@ -68,6 +91,15 @@
                         this.errored = true;
                     })
                     .finally(() => this.loading = false)
+            },
+            makePagiantion(response) {
+                let pagination = {
+                    current_page: response.current_page,
+                    last_page: response.last_page,
+                    prev_page_url: response.prev_page_url,
+                    next_page_url: response.next_page_url,
+                }
+                this.pagination = pagination
             }
         }
         // name: "index"

@@ -6,7 +6,7 @@
         </div>
 
         <div v-if="errored" class="alert alert-danger" role="alert">
-            Not records!
+            No records!
         </div>
         <table v-else class="table table-striped">
             <div v-if="loading">Loading................</div>
@@ -20,12 +20,16 @@
             </thead>
             <tbody>
             <tr v-for="post in posts" :key="post.id">
-                <th scope="row">{{post.id}}</th>
+                <th> {{post.id}}</th>
                 <td>{{post.title}}</td>
                 <td>{{post.description}}</td>
                 <td>
-                    <button class="btn btn-success">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <button class="btn btn-success">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <button @click="deletePost(post.id)" class="btn btn-danger">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </td>
             </tr>
 
@@ -41,7 +45,7 @@
                 </li>
                 <li class="page-item disabled">
                     <a class="page-link" href="#">
-                        Page {{pagination.current_page}} of  {{pagination.last_page}} Pages
+                        Page {{pagination.current_page}} of {{pagination.last_page}} Pages
                     </a>
                 </li>
                 <li :class="{disabled:!pagination.next_page_url}"
@@ -100,6 +104,19 @@
                     next_page_url: response.next_page_url,
                 }
                 this.pagination = pagination
+            },
+            deletePost(id) {
+                axios
+                    .delete(`/api/posts/${id}`)
+                    .then(response => {
+                            this.getPosts()
+                            console.log(response)
+                        }
+                    )
+                    .catch(error => {
+                        console.log(error)
+                    })
+
             }
         }
         // name: "index"

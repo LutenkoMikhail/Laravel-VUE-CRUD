@@ -13,18 +13,13 @@
                         <input v-model="post.title" type="text" class="form-control" id="title">
                     </div>
 
-<!--                    <div class="form-group">-->
-<!--                        <label for="title">Название</label>-->
-<!--                        <input v-model="post.title" type="text" class="form-control" id="title">-->
-<!--                    </div>-->
-
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea v-model="post.description" class="form-control" id="description" rows="3"></textarea>
 
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
         </div>
@@ -49,9 +44,10 @@
                 <td>{{post.title}}</td>
                 <td>{{post.description}}</td>
                 <td>
-                    <button class="btn btn-success">
+                    <button @click="editPost(post)" class="btn btn-success">
                         <i class="fa fa-pencil"></i>
                     </button>
+
                     <button @click="deletePost(post.id)" class="btn btn-danger">
                         <i class="fa fa-trash"></i>
                     </button>
@@ -94,7 +90,7 @@
                     title: '',
                     description: ''
                 },
-                post_id: '',
+                // post_id: '',
                 pagination: {},
                 edit: false,
                 loading: true,
@@ -145,13 +141,13 @@
             addPost() {
                 if (this.edit === false) {
                     axios
-                         .post('/api/posts', {
+                        .post('/api/posts', {
                             title: this.post.title,
                             description: this.post.description
                         })
                         .then(response => {
                                 this.post.title = '',
-                                this.post.description = ''
+                                    this.post.description = ''
                                 this.getPosts()
                                 // alert('Post add.')
                                 console.log(response)
@@ -161,8 +157,29 @@
                             console.log(error)
                         })
                 } else {
-
+                    axios
+                        .put(`/api/posts/${this.post.id}`, {
+                            title: this.post.title,
+                            description: this.post.description
+                        })
+                        .then(response => {
+                                this.post.title = '',
+                                    this.post.description = ''
+                                this.getPosts()
+                                // alert('Post add.')
+                                console.log(response)
+                            }
+                        )
+                        .catch(error => {
+                            console.log(error)
+                        })
                 }
+            },
+            editPost(post) {
+                this.edit = true
+                this.post.id = post.id
+                this.post.title = post.title
+                this.post.description = post.description
             }
         }
         // name: "index"

@@ -5,6 +5,31 @@
             <h1>All records.</h1>
         </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <form @submit.prevent="addPost" class="mb-4">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input v-model="post.title" type="text" class="form-control" id="title">
+                    </div>
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="title">Название</label>-->
+<!--                        <input v-model="post.title" type="text" class="form-control" id="title">-->
+<!--                    </div>-->
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea v-model="post.description" class="form-control" id="description" rows="3"></textarea>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+
+
         <div v-if="errored" class="alert alert-danger" role="alert">
             No records!
         </div>
@@ -116,7 +141,28 @@
                     .catch(error => {
                         console.log(error)
                     })
+            },
+            addPost() {
+                if (this.edit === false) {
+                    axios
+                         .post('/api/posts', {
+                            title: this.post.title,
+                            description: this.post.description
+                        })
+                        .then(response => {
+                                this.post.title = '',
+                                this.post.description = ''
+                                this.getPosts()
+                                // alert('Post add.')
+                                console.log(response)
+                            }
+                        )
+                        .catch(error => {
+                            console.log(error)
+                        })
+                } else {
 
+                }
             }
         }
         // name: "index"

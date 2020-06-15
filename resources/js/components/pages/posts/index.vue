@@ -7,6 +7,12 @@
 
         <div class="row">
             <div class="col-sm-6">
+
+                <validation-errors v-if="validationErrors"
+                                   :errors="validationErrors">
+
+                </validation-errors>
+
                 <form @submit.prevent="addPost" class="mb-4">
                     <div class="form-group">
                         <label for="title">Title</label>
@@ -94,7 +100,8 @@
                 pagination: {},
                 edit: false,
                 loading: true,
-                errored: false
+                errored: false,
+                validationErrors: ''
             };
         },
         mounted() {
@@ -154,6 +161,11 @@
                             }
                         )
                         .catch(error => {
+                            if (error.response.status === 422) {
+                                this.validationErrors = error.response.data.errors
+
+                            }
+                            // console.log(error.response.data.errors);
                             console.log(error)
                         })
                 } else {

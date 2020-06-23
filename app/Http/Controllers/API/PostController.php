@@ -26,17 +26,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title'=>'required|max:255',
-            'description'=>'required|max:255'
-        ]);
+        $post = new Post();
+        $post->validate($request);
+        $post->create($request->only(['title','description']));
 
-        $post = new Post([
-            'title' => $request->get('title'),
-            'description' => $request->get('description')
-        ]);
-
-        $post->save();
     }
 
     /**
@@ -59,17 +52,12 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title'=>'required|max:255',
-            'description'=>'required|max:255'
-        ]);
-        
+        $post = new Post();
+        $post->validate($request);
+
         $post = Post::find($id);
+        $post->update($request->only(['title','description']));
 
-        $post->title = $request->get('title');
-        $post->description = $request->get('description');
-
-        $post->save();
     }
 
     /**

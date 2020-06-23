@@ -26,6 +26,8 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save</button>
+                    <button v-if="edit" @click="edit=false"
+                            type="button" class="btn btn-warning">Cancel</button>
                 </form>
             </div>
         </div>
@@ -176,7 +178,9 @@
                         })
                         .then(response => {
                                 this.post.title = '',
-                                    this.post.description = ''
+                                    this.post.description = '',
+                                    this.edit = false
+
                                 this.getPosts()
                                 // alert('Post add.')
                                 console.log(response)

@@ -14,7 +14,9 @@
 <script>
     export default {
         // name: "ValidationErrors"
-        props: ['errors'],
+        props: {
+            errors:Object
+        },
         computed: {
             validationErrors() {
                 let errors = Object.values(this.errors)

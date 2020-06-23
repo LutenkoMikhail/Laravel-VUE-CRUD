@@ -183,6 +183,11 @@
                             }
                         )
                         .catch(error => {
+                            if (error.response.status === 422) {
+                                this.validationErrors = error.response.data.errors
+
+                            }
+                            // console.log(error.response.data.errors);
                             console.log(error)
                         })
                 }
